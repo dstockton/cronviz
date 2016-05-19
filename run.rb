@@ -26,9 +26,18 @@ EVENT_DATA = {
 }
 
 
+class Time
+  def beginning_of_day
+    Time.mktime(year, month, day).send(gmt? ? :gmt : :localtime)
+  end
+  def end_of_day
+    self.beginning_of_day + (60*60*24)
+  end
+end
+
 def main
-  earliest_time = "2011-10-17 00:00"
-  latest_time   = "2011-10-17 23:59"
+  earliest_time = Time.now.beginning_of_day().to_s.gsub(" +0100","")
+  latest_time   = Time.now.end_of_day().to_s.gsub(" +0100","")
 
   json = Cronviz::Crontab.new(:earliest_time=>earliest_time, :latest_time=>latest_time, :event_data=>EVENT_DATA).to_json
   haml = open("assets/container.haml").read
