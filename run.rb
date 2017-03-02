@@ -36,8 +36,8 @@ class Time
 end
 
 def main
-  earliest_time = Time.now.beginning_of_day().to_s.gsub(" +0100","")
-  latest_time   = Time.now.end_of_day().to_s.gsub(" +0100","")
+  earliest_time = (Time.now.beginning_of_day()+(5*24*60*60)).to_s.gsub(" +0100","")
+  latest_time   = (Time.now.end_of_day()+(5*24*60*60)).to_s.gsub(" +0100","")
 
   json = Cronviz::Crontab.new(:earliest_time=>earliest_time, :latest_time=>latest_time, :event_data=>EVENT_DATA).to_json
   haml = open("assets/container.haml").read
